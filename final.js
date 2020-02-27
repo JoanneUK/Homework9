@@ -22,6 +22,7 @@ app.get('/notes', (req, res) => {
 
 app.get('/api/notes', (req, res) => {
   fs.readFile('./db/db.json', 'utf-8', function(err, data){
+    console.log(data)
     res.json(data)
   })
 });
@@ -34,7 +35,7 @@ app.post('/api/notes', (req, res) =>
 fs.readFile('./db/db.json', 'utf-8', function(err, data){
   const db = JSON.parse(data)
   db.push(req.body)
-  fs.writeFile('./db/db.json', db, err=>{
+  fs.writeFile('./db/db.json', JSON.stringify(db), err=>{
     if(err) throw err
     res.send('ok')
   })
@@ -46,7 +47,7 @@ app.delete('/api/notes/:id', (req, res) => {
 fs.readFile('./db/db.json', 'utf-8', function(err, data){
   const db = JSON.parse(data)
   db.splice(req.body.id, 1)
-  fs.writeFile('./db/db.json', db, err=>{
+  fs.writeFile('./db/db.json', JSON.stringify(db), err=>{
     if(err) throw err;
     res.end("Note deleted");
   })
